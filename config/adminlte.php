@@ -344,6 +344,12 @@ return [
             'url' => 'members',
             'icon' => 'fas fa-fw fa-users',
         ],
+        ['header' => 'LAPORAN'],
+        [
+            'text' => 'Laporan & Statistik',
+            'url' => 'reports',
+            'icon' => 'fas fa-fw fa-chart-bar',
+        ],
         ['header' => 'PENGATURAN'],
         [
             'text' => 'Profil',
