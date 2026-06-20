@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publisher;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
     public function index(Request $request)
     {
         $query = Book::with(['category', 'publisher']);
@@ -44,8 +51,16 @@ class BookController extends Controller
             'year_published' => 'nullable|integer|min:1900|max:' . date('Y'),
             'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        if ($request->hasFile('cover')) {
+            $upload = $this->cloudinary->upload($request->file('cover'), 'library/covers');
+            $validated['cover_url'] = $upload['url'];
+            $validated['cover_public_id'] = $upload['public_id'];
+        }
+
+        unset($validated['cover']);
         Book::create($validated);
         return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan.');
     }
@@ -74,14 +89,29 @@ class BookController extends Controller
             'year_published' => 'nullable|integer|min:1900|max:' . date('Y'),
             'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        if ($request->hasFile('cover')) {
+            // Hapus cover lama di Cloudinary
+            if ($book->cover_public_id) {
+                $this->cloudinary->delete($book->cover_public_id);
+            }
+            $upload = $this->cloudinary->upload($request->file('cover'), 'library/covers');
+            $validated['cover_url'] = $upload['url'];
+            $validated['cover_public_id'] = $upload['public_id'];
+        }
+
+        unset($validated['cover']);
         $book->update($validated);
         return redirect()->route('books.index')->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(Book $book)
     {
+        if ($book->cover_public_id) {
+            $this->cloudinary->delete($book->cover_public_id);
+        }
         $book->delete();
         return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus.');
     }
