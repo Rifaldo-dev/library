@@ -5,9 +5,11 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Data Peminjaman</h1>
-        <a href="{{ route('loans.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Tambah Peminjaman
-        </a>
+        <div>
+            <a href="{{ route('export.loans.pdf') }}" class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</a>
+            <a href="{{ route('export.loans.csv') }}" class="btn btn-success"><i class="fas fa-file-csv"></i> CSV</a>
+            <a href="{{ route('loans.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Peminjaman</a>
+        </div>
     </div>
 @stop
 

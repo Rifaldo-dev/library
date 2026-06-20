@@ -27,8 +27,8 @@
 - [x] CRUD Peminjaman & Pengembalian
 - [x] Data Dummy (Seeder & Factory)
 - [x] Auth (Login, Register, Reset Password)
-- [ ] Laporan & Statistik
-- [ ] Export PDF/Excel
+- [x] Laporan & Statistik
+- [x] Export PDF/Excel
 - [ ] Pencarian & Filter
 - [ ] Upload Cover Buku
 - [ ] Role & Permission

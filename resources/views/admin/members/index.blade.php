@@ -5,9 +5,11 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Daftar Anggota</h1>
-        <a href="{{ route('members.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Tambah Anggota
-        </a>
+        <div>
+            <a href="{{ route('export.members.pdf') }}" class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</a>
+            <a href="{{ route('export.members.csv') }}" class="btn btn-success"><i class="fas fa-file-csv"></i> CSV</a>
+            <a href="{{ route('members.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Anggota</a>
+        </div>
     </div>
 @stop
 
