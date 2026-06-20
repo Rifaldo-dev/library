@@ -94,8 +94,17 @@ class ExportController extends Controller
     {
         $query = Loan::with(['book', 'member']);
 
+        if ($request->filled('start_date')) {
+            $query->where('loan_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->where('loan_date', '<=', $request->end_date);
+        }
         if ($request->filled('status')) {
             $query->where('status', $request->status);
+        }
+        if ($request->filled('category_id')) {
+            $query->whereHas('book', fn($q) => $q->where('category_id', $request->category_id));
         }
 
         $loans = $query->latest('loan_date')->get();
@@ -108,8 +117,17 @@ class ExportController extends Controller
     {
         $query = Loan::with(['book', 'member']);
 
+        if ($request->filled('start_date')) {
+            $query->where('loan_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->where('loan_date', '<=', $request->end_date);
+        }
         if ($request->filled('status')) {
             $query->where('status', $request->status);
+        }
+        if ($request->filled('category_id')) {
+            $query->whereHas('book', fn($q) => $q->where('category_id', $request->category_id));
         }
 
         $loans = $query->latest('loan_date')->get();

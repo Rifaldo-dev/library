@@ -5,28 +5,86 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Laporan & Statistik</h1>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-file-pdf"></i> Export PDF
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('export.books.pdf') }}"><i class="fas fa-book mr-2"></i>Daftar Buku</a>
-                <a class="dropdown-item" href="{{ route('export.members.pdf') }}"><i class="fas fa-users mr-2"></i>Daftar Anggota</a>
-                <a class="dropdown-item" href="{{ route('export.loans.pdf') }}"><i class="fas fa-exchange-alt mr-2"></i>Laporan Peminjaman</a>
+        <div>
+            <div class="btn-group mr-2">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-file-pdf"></i> Export PDF
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ route('export.books.pdf') }}"><i class="fas fa-book mr-2"></i>Daftar Buku</a>
+                    <a class="dropdown-item" href="{{ route('export.members.pdf') }}"><i class="fas fa-users mr-2"></i>Daftar Anggota</a>
+                    <a class="dropdown-item" href="{{ route('export.loans.pdf', request()->only(['start_date', 'end_date', 'status', 'category_id'])) }}"><i class="fas fa-exchange-alt mr-2"></i>Laporan Peminjaman</a>
+                </div>
             </div>
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-file-excel"></i> Export CSV
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('export.books.csv') }}"><i class="fas fa-book mr-2"></i>Daftar Buku</a>
-                <a class="dropdown-item" href="{{ route('export.members.csv') }}"><i class="fas fa-users mr-2"></i>Daftar Anggota</a>
-                <a class="dropdown-item" href="{{ route('export.loans.csv') }}"><i class="fas fa-exchange-alt mr-2"></i>Laporan Peminjaman</a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-file-excel"></i> Export CSV
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ route('export.books.csv') }}"><i class="fas fa-book mr-2"></i>Daftar Buku</a>
+                    <a class="dropdown-item" href="{{ route('export.members.csv') }}"><i class="fas fa-users mr-2"></i>Daftar Anggota</a>
+                    <a class="dropdown-item" href="{{ route('export.loans.csv', request()->only(['start_date', 'end_date', 'status', 'category_id'])) }}"><i class="fas fa-exchange-alt mr-2"></i>Laporan Peminjaman</a>
+                </div>
             </div>
         </div>
     </div>
 @stop
 
 @section('content')
+    {{-- Filter --}}
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-filter mr-1"></i> Filter Laporan</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('reports.index') }}" method="GET">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="start_date">Dari Tanggal</label>
+                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ $startDate }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="end_date">Sampai Tanggal</label>
+                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ $endDate }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="">Semua Status</option>
+                                <option value="borrowed" {{ $status === 'borrowed' ? 'selected' : '' }}>Dipinjam</option>
+                                <option value="returned" {{ $status === 'returned' ? 'selected' : '' }}>Dikembalikan</option>
+                                <option value="overdue" {{ $status === 'overdue' ? 'selected' : '' }}>Terlambat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="category_id">Kategori</label>
+                            <select name="category_id" id="category_id" class="form-control">
+                                <option value="">Semua Kategori</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}" {{ $categoryId == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-search mr-1"></i> Terapkan Filter</button>
+                    <a href="{{ route('reports.index') }}" class="btn btn-secondary"><i class="fas fa-times mr-1"></i> Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- Info Boxes --}}
     <div class="row">
         <div class="col-lg-3 col-6">
