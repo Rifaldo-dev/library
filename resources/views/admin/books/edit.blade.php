@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="card">
-        <form action="{{ route('books.update', $book) }}" method="POST">
+        <form action="{{ route('books.update', $book) }}" method="POST" enctype="multipart/form-data">
             @csrf @method('PUT')
             <div class="card-body">
                 <div class="form-group">
@@ -70,6 +70,25 @@
                     <label for="description">Deskripsi</label>
                     <textarea name="description" id="description" class="form-control" rows="3">{{ old('description', $book->description) }}</textarea>
                 </div>
+                <div class="form-group">
+                    <label for="cover">Cover Buku</label>
+                    @if($book->cover_url)
+                        <div class="mb-2">
+                            <img src="{{ $book->cover_url }}" alt="Cover" style="max-height: 150px; border-radius: 4px;">
+                        </div>
+                    @endif
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" name="cover" id="cover" class="custom-file-input @error('cover') is-invalid @enderror" accept="image/*">
+                            <label class="custom-file-label" for="cover">{{ $book->cover_url ? 'Ganti cover...' : 'Pilih gambar...' }}</label>
+                        </div>
+                    </div>
+                    @error('cover')<span class="text-danger text-sm">{{ $message }}</span>@enderror
+                    <small class="text-muted">Format: JPEG, PNG, WEBP. Maks: 2MB</small>
+                    <div id="cover-preview" class="mt-2" style="display:none;">
+                        <img id="cover-preview-img" src="" alt="Preview" class="img-fluid rounded" style="max-height: 200px;">
+                    </div>
+                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Update</button>
@@ -77,4 +96,21 @@
             </div>
         </form>
     </div>
+@stop
+
+@section('js')
+    <script>
+        document.getElementById('cover').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                e.target.nextElementSibling.textContent = file.name;
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    document.getElementById('cover-preview-img').src = ev.target.result;
+                    document.getElementById('cover-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 @stop
