@@ -30,5 +30,5 @@
 - [x] Laporan & Statistik
 - [x] Export PDF/Excel
 - [x] Pencarian & Filter
-- [ ] Upload Cover Buku
+- [x] Upload Cover Buku
 - [ ] Role & Permission
