@@ -29,6 +29,6 @@
 - [x] Auth (Login, Register, Reset Password)
 - [x] Laporan & Statistik
 - [x] Export PDF/Excel
-- [ ] Pencarian & Filter
+- [x] Pencarian & Filter
 - [ ] Upload Cover Buku
 - [ ] Role & Permission
