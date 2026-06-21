@@ -74,7 +74,7 @@ class ReportController extends Controller
 
         // Peminjaman per bulan (6 bulan terakhir atau sesuai filter)
         $monthlyQuery = Loan::select(
-                DB::raw("strftime('%Y-%m', loan_date) as month"),
+                DB::raw("TO_CHAR(loan_date, 'YYYY-MM') as month"),
                 DB::raw('count(*) as total')
             );
 

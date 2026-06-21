@@ -6,7 +6,7 @@
 ![PHP](https://img.shields.io/badge/PHP_8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![AdminLTE](https://img.shields.io/badge/AdminLTE_3.16-3C8DBC?style=for-the-badge&logo=adminlte&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap_4-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite_3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL_14-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 
 ## Default Login
